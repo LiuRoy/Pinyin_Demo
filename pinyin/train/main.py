@@ -10,7 +10,8 @@ from pinyin.model import (
     Transition,
     Emission,
     Starting,
-    init_tables
+    init_tables,
+    Session
 )
 
 
@@ -87,3 +88,12 @@ if __name__ == '__main__':
     init_start()
     init_emission()
     init_transition()
+
+    # 创建索引
+    session = Session()
+    session.execute('create index ix_starting_character on starting(character);')
+    session.execute('create index ix_emission_character on emission(character);')
+    session.execute('create index ix_emission_pinyin on emission(pinyin);')
+    session.execute('create index ix_transition_previous on transition(previous);')
+    session.execute('create index ix_transition_behind on transition(behind);')
+    session.commit()

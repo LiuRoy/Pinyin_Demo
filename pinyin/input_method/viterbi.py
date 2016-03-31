@@ -9,7 +9,7 @@ def viterbi(pinyin_list):
     """
     viterbi算法实现输入法
 
-    Aargs:
+    Args:
         pinyin_list (list): 拼音列表
     """
     start_char = Emission.join_starting(pinyin_list[0])

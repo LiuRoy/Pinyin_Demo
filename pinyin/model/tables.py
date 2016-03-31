@@ -137,10 +137,3 @@ def init_tables():
         pass
 
     BaseModel.metadata.create_all(bind=engine)
-
-    session = Session()
-    session.execute('create index ix_starting_character on starting(character);')
-    session.execute('create index ix_emission_character on emission(character);')
-    session.execute('create index ix_emission_pinyin on emission(pinyin);')
-    session.execute('create index ix_transition_previous on transition(previous);')
-    session.execute('create index ix_transition_behind on transition(behind);')
