@@ -40,7 +40,7 @@ def init_start():
 
 def init_emission():
     """
-    初始化起始概率
+    初始化发射概率
     """
     character_pinyin_map = {}
     for phrase, frequency in iter_dict():
@@ -64,7 +64,7 @@ def init_emission():
 
 def init_transition():
     """
-    出事话转移概率
+    初始化转移概率
     """
     # todo 优化 太慢
     transition_map = {}
