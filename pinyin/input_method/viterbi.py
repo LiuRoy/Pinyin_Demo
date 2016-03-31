@@ -36,8 +36,10 @@ def viterbi(pinyin_list):
 
 
 if __name__ == '__main__':
-    pinyin_list = ['shi', 'ye']
-    V = viterbi(pinyin_list)
+    while 1:
+        string = raw_input('input:')
+        pinyin_list = string.split()
+        V = viterbi(pinyin_list)
 
-    for phrase, prob in sorted(V.items(), key=lambda d: d[1], reverse=True):
-        print phrase, prob
+        for phrase, prob in sorted(V.items(), key=lambda d: d[1], reverse=True):
+            print phrase, prob

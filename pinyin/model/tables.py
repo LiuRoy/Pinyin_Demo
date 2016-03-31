@@ -20,8 +20,8 @@ class Transition(BaseModel):
     __tablename__ = 'transition'
 
     id = Column(Integer, primary_key=True)
-    previous = Column(String(2), nullable=False)
-    behind = Column(String(2), nullable=False)
+    previous = Column(String(1), nullable=False)
+    behind = Column(String(1), nullable=False)
     probability = Column(Float, nullable=False)
 
     @classmethod
@@ -64,8 +64,8 @@ class Emission(BaseModel):
     __tablename__ = 'emission'
 
     id = Column(Integer, primary_key=True)
-    character = Column(String(2), nullable=False)
-    pinyin = Column(String(8), nullable=False)
+    character = Column(String(1), nullable=False)
+    pinyin = Column(String(7), nullable=False)
     probability = Column(Float, nullable=False)
 
     @classmethod
@@ -84,7 +84,7 @@ class Emission(BaseModel):
         return record
 
     @classmethod
-    def join_starting(cls, pinyin, limit=50):
+    def join_starting(cls, pinyin, limit=10):
         """join starting表查询
 
         Args:
@@ -108,7 +108,7 @@ class Starting(BaseModel):
     __tablename__ = 'starting'
 
     id = Column(Integer, primary_key=True)
-    character = Column(String(2), nullable=False)
+    character = Column(String(1), nullable=False)
     probability = Column(Float, nullable=False)
 
     @classmethod
