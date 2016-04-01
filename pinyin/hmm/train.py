@@ -10,19 +10,10 @@ from pinyin.model import (
     Transition,
     Emission,
     Starting,
-    init_tables,
-    Session
+    init_hmm_tables,
+    HMMSession
 )
-
-
-def iter_dict():
-    """
-    遍历dict.txt文件
-    """
-    with open('dict.txt', 'r', ) as f:
-        for line in f:
-            phrase, frequency, tag = line.split()
-            yield phrase.decode('utf8'), int(frequency)
+from pinyin.utils import iter_dict
 
 
 def init_start():
@@ -84,13 +75,13 @@ def init_transition():
 
 
 if __name__ == '__main__':
-    init_tables()
+    init_hmm_tables()
     init_start()
     init_emission()
     init_transition()
 
     # 创建索引
-    session = Session()
+    session = HMMSession()
     session.execute('create index ix_starting_character on starting(character);')
     session.execute('create index ix_emission_character on emission(character);')
     session.execute('create index ix_emission_pinyin on emission(pinyin);')

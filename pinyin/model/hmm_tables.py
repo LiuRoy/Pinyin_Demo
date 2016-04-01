@@ -5,14 +5,13 @@
 import os
 
 from sqlalchemy import Column, String, Integer, Float, create_engine, desc
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-db_name = os.path.join(current_dir, 'pinyin.sqlite')
+from pinyin.model.common import current_dir, BaseModel
+
+db_name = os.path.join(current_dir, 'hmm.sqlite')
 engine = create_engine('sqlite:///{}'.format(db_name))
-Session = sessionmaker(bind=engine)
-BaseModel = declarative_base()
+HMMSession = sessionmaker(bind=engine)
 
 
 class Transition(BaseModel):
@@ -33,7 +32,7 @@ class Transition(BaseModel):
             behind (string): 后面的汉字
             probability (float): 转移概率
         """
-        session = Session()
+        session = HMMSession()
         record = cls(previous=previous, behind=behind, probability=probability)
         session.add(record)
         session.commit()
@@ -47,7 +46,7 @@ class Transition(BaseModel):
             pinyin (string): 拼音
             characters (string): 上次的汉字
         """
-        session = Session()
+        session = HMMSession()
         query = session.query(cls.behind,
                               Emission.probability + cls.probability).\
             join(Emission, Emission.character == cls.behind).\
@@ -77,7 +76,7 @@ class Emission(BaseModel):
             pinyin (string): 拼音
             probability (float): 概率
         """
-        session = Session()
+        session = HMMSession()
         record = cls(character=character, pinyin=pinyin, probability=probability)
         session.add(record)
         session.commit()
@@ -91,7 +90,7 @@ class Emission(BaseModel):
             pinyin (string): 拼音
             limit (int): 数据个数
         """
-        session = Session()
+        session = HMMSession()
         query = session.query(cls.character,
                               cls.probability + Starting.probability).\
             join(Starting, cls.character == Starting.character).\
@@ -119,14 +118,14 @@ class Starting(BaseModel):
             character (string): 汉字
             probability (float): 起始概率
         """
-        session = Session()
+        session = HMMSession()
         record = cls(character=character, probability=probability)
         session.add(record)
         session.commit()
         return record
 
 
-def init_tables():
+def init_hmm_tables():
     """
     创建表
     """
@@ -136,4 +135,6 @@ def init_tables():
     with open(db_name, 'w') as f:
         pass
 
-    BaseModel.metadata.create_all(bind=engine)
+    BaseModel.metadata.create_all(bind=engine, tables=[Transition.__table__,
+                                                       Starting.__table__,
+                                                       Emission.__table__])
