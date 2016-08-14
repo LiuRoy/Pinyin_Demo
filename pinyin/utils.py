@@ -8,7 +8,7 @@ def iter_dict():
     """
     遍历dict.txt文件
     """
-    with open(dict_path, 'r', ) as f:
+    with open(dict_path, 'r') as f:
         for line in f:
             phrase, frequency, tag = line.split()
             yield phrase.decode('utf8'), int(frequency)

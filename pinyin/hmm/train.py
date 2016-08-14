@@ -36,17 +36,17 @@ def init_emission():
     """
     character_pinyin_map = {}
     for phrase, frequency in iter_dict():
-        pinyins = pinyin(phrase, style=NORMAL)
+        pinyins = pinyin(phrase, style=NORMAL, heteronym=True)
         for character, py in zip(phrase, pinyins):
             character_pinyin_count = len(py)
             if character not in character_pinyin_map:
                 character_pinyin_map[character] = \
-                    {x: frequency/character_pinyin_count for x in py}
+                    {x: frequency / character_pinyin_count for x in py}
             else:
                 pinyin_freq_map = character_pinyin_map[character]
                 for x in py:
                     pinyin_freq_map[x] = pinyin_freq_map.get(x, 0) + \
-                                         frequency/character_pinyin_count
+                                         frequency / character_pinyin_count
 
     for character, pinyin_map in character_pinyin_map.iteritems():
         sum_frequency = sum(pinyin_map.values())

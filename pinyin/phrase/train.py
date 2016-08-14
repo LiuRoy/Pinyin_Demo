@@ -15,6 +15,7 @@ from pinyin.model import (
 def int_phrase_pinyin_map():
     """
     初始化字典中短语的拼音
+    result: {u'zhi dao': {u'指导': 1, u'知道':2, u'直到': 3}}
     """
     result = {}
     total = 0
