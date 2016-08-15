@@ -33,10 +33,11 @@ def init_start():
 def init_emission():
     """
     初始化发射概率
+    character_pinyin_map: {u'长': {u'chang': 1000, u'zhang': 500}}
     """
     character_pinyin_map = {}
     for phrase, frequency in iter_dict():
-        pinyins = pinyin(phrase, style=NORMAL, heteronym=True)
+        pinyins = pinyin(phrase, style=NORMAL) # e.g. [[u'zhang'], [u'da']]
         for character, py in zip(phrase, pinyins):
             character_pinyin_count = len(py)
             if character not in character_pinyin_map:
@@ -51,7 +52,7 @@ def init_emission():
     for character, pinyin_map in character_pinyin_map.iteritems():
         sum_frequency = sum(pinyin_map.values())
         for py, frequency in pinyin_map.iteritems():
-            Emission.add(character, py, log(frequency/sum_frequency))
+            Emission.add(character, py, log(frequency / sum_frequency))
 
 
 def init_transition():
